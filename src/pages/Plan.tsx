@@ -28,7 +28,7 @@ const regions: { key: Region; label: string }[] = [
 ];
 
 export default function Plan() {
-  const { user, signOut } = useAuth();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
   const [activeRegion, setActiveRegion] = useState<Region>("all");
   const [search, setSearch] = useState("");
@@ -293,7 +293,6 @@ export default function Plan() {
 /* ─── Plan Card ─── */
 function PlanCard({
   destination,
-  index,
 }: {
   destination: Destination;
   index: number;

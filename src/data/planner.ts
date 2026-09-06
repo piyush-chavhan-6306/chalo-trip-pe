@@ -34,14 +34,6 @@ const STYLE_KEYWORDS: Record<string, string[]> = {
   food: ["food", "tasting", "wine", "dinner", "seafood", "tagine", "pastry", "market", "lemon", "kaiseki"],
 };
 
-const REGION_MAP: Record<string, string> = {
-  europe: "europe",
-  asia: "asia",
-  americas: "americas",
-  africa: "africa",
-  any: "any",
-};
-
 /** Map a duration to matching destinations */
 function durationMatch(destDuration: string, targetDays: number): number {
   const match = destDuration.match(/(\d+)/);

@@ -4,20 +4,14 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import {
   Search,
   ArrowUpRight,
-  Calendar,
-  Users,
   Star,
-  ChevronRight,
   Sparkles,
-  TrendingUp,
   Shield,
   Headphones,
   CreditCard,
   ArrowRight,
   Compass,
-  MapPin,
   SlidersHorizontal,
-  Check,
 } from "lucide-react";
 import { DestinationCard } from "@/components/DestinationCard";
 import { destinations } from "@/data/destinations";

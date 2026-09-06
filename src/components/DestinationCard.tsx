@@ -6,15 +6,17 @@ import {
   useSpring,
   useMotionTemplate,
 } from "framer-motion";
-import { Star, Clock, MapPin, ArrowUpRight } from "lucide-react";
+import { Star, Clock, MapPin, ArrowUpRight, Check } from "lucide-react";
 import type { Destination } from "@/data/destinations";
 
 interface DestinationCardProps {
   destination: Destination;
   index: number;
+  matchScore?: number;
+  matchReasons?: string[];
 }
 
-export function DestinationCard({ destination, index }: DestinationCardProps) {
+export function DestinationCard({ destination, index, matchScore, matchReasons }: DestinationCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -226,6 +228,28 @@ export function DestinationCard({ destination, index }: DestinationCardProps) {
                 </span>
               ))}
             </div>
+
+            {/* Match score badge */}
+            {matchScore !== undefined && (
+              <div className="mt-3 flex items-center gap-2">
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-stone-900 px-3 py-1">
+                  <span className="text-xs font-semibold text-[#FAF8F5]">{matchScore}% match</span>
+                </div>
+              </div>
+            )}
+            {matchReasons && matchReasons.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {matchReasons.map((reason) => (
+                  <span
+                    key={reason}
+                    className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-0.5 text-[10px] font-medium text-green-700 border border-green-200/60"
+                  >
+                    <Check className="h-2.5 w-2.5" aria-hidden="true" />
+                    {reason}
+                  </span>
+                ))}
+              </div>
+            )}
           </motion.div>
         </Link>
       </motion.div>
