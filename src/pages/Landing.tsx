@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin,
-  Compass,
   ArrowUpRight,
   Search,
   SlidersHorizontal,
@@ -51,18 +50,8 @@ export default function Landing() {
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="flex h-16 items-center justify-between">
             {/* Brand */}
-            <a href="/" className="flex items-center gap-3 group">
-              <div className="flex items-center justify-center h-9 w-9 rounded-xl bg-stone-900 group-hover:bg-stone-800 transition-colors">
-                <Compass className="h-4.5 w-4.5 text-[#FAF8F5]" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[15px] font-semibold tracking-tight text-stone-900 leading-none">
-                  Chalo Trip Pe
-                </span>
-                <span className="text-[10px] tracking-[0.18em] uppercase text-stone-400 mt-0.5">
-                  Weekend Escapes
-                </span>
-              </div>
+            <a href="/" className="flex items-center gap-2.5 group">
+              <img src="/logo.svg" alt="Chalo Trip Pe" className="h-8 w-auto" />
             </a>
 
             {/* Nav links */}
@@ -380,18 +369,8 @@ export default function Landing() {
       <footer className="border-t border-stone-200/60 bg-[#F5F3F0]">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-12">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-stone-900">
-                <Compass className="h-4 w-4 text-[#FAF8F5]" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-semibold tracking-tight text-stone-900 leading-none">
-                  Chalo Trip Pe
-                </span>
-                <span className="text-[9px] tracking-[0.18em] uppercase text-stone-400 mt-0.5">
-                  Weekend Escapes
-                </span>
-              </div>
+            <div className="flex items-center gap-2.5">
+              <img src="/logo.svg" alt="Chalo Trip Pe" className="h-7 w-auto" />
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-xs text-stone-400">

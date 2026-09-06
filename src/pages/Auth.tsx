@@ -1,5 +1,5 @@
 import { useAuth } from "@/hooks/use-auth";
-import { Compass, ArrowRight, Loader2, Mail, UserX } from "lucide-react";
+import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import {
@@ -98,9 +98,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
         <div className="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==')]" />
 
         <div className="relative text-center px-12">
-          <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-white/10 mb-8">
-            <Compass className="h-8 w-8 text-[#FAF8F5]" />
-          </div>
+          <img src="/logo.svg" alt="Chalo Trip Pe" className="h-10 w-auto mx-auto mb-8 brightness-0 invert" />
           <h2 className="text-3xl font-semibold tracking-tight text-white mb-3">
             Chalo Trip Pe
           </h2>
@@ -119,12 +117,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
         <div className="w-full max-w-sm">
           {/* Mobile brand */}
           <div className="lg:hidden text-center mb-10">
-            <div className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-stone-900 mb-4">
-              <Compass className="h-5 w-5 text-[#FAF8F5]" />
-            </div>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
-              Chalo Trip Pe
-            </h1>
+            <img src="/logo.svg" alt="Chalo Trip Pe" className="h-8 w-auto mx-auto mb-4" />
           </div>
 
           {step === "signIn" ? (

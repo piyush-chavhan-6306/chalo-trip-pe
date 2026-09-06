@@ -73,11 +73,8 @@ export default function DestinationDetail() {
               <ArrowLeft className="h-4 w-4" />
               All Destinations
             </Link>
-            <Link
-              to="/"
-              className="text-sm font-semibold tracking-tight text-stone-900"
-            >
-              Chalo Trip Pe
+            <Link to="/">
+              <img src="/logo.svg" alt="Chalo Trip Pe" className="h-7 w-auto" />
             </Link>
           </div>
         </div>
