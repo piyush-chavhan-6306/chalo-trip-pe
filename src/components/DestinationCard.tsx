@@ -79,7 +79,7 @@ export function DestinationCard({ destination, index }: DestinationCardProps) {
   }
 
   return (
-    <motion.div
+    <motion.article
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -94,6 +94,7 @@ export function DestinationCard({ destination, index }: DestinationCardProps) {
       onMouseLeave={handleMouseLeave}
       className="group relative"
       style={{ perspective: 1200 }}
+      aria-label={`${destination.name} — ${destination.country} — ₹${(destination.price * 85).toLocaleString("en-IN")} per trip`}
     >
       <motion.div
         style={{
@@ -228,6 +229,6 @@ export function DestinationCard({ destination, index }: DestinationCardProps) {
           </motion.div>
         </Link>
       </motion.div>
-    </motion.div>
+    </motion.article>
   );
 }

@@ -198,27 +198,30 @@ export default function Checkout() {
               {/* Contact details */}
               <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
                 <h2 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <div className="h-5 w-1 bg-[#2276E3] rounded-full" />
+                  <div className="h-5 w-1 bg-[#2276E3] rounded-full" aria-hidden="true" />
                   Contact Details
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                    <label htmlFor="checkout-email" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
                       Email Address
                     </label>
                     <input
+                      id="checkout-email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="you@example.com"
+                      aria-required="true"
                       className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2276E3]/20 focus:border-[#2276E3] transition-all"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                    <label htmlFor="checkout-phone" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
                       Phone Number
                     </label>
                     <input
+                      id="checkout-phone"
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
@@ -232,58 +235,72 @@ export default function Checkout() {
               {/* Card details */}
               <div className="bg-white rounded-xl border border-gray-200 p-6">
                 <h2 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <div className="h-5 w-1 bg-[#FF6B35] rounded-full" />
-                  <CreditCard className="h-4 w-4 text-[#FF6B35]" />
+                  <div className="h-5 w-1 bg-[#FF6B35] rounded-full" aria-hidden="true" />
+                  <CreditCard className="h-4 w-4 text-[#FF6B35]" aria-hidden="true" />
                   Payment Details
                 </h2>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                    <label htmlFor="checkout-card-number" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
                       Card Number
                     </label>
                     <input
+                      id="checkout-card-number"
                       type="text"
+                      inputMode="numeric"
+                      autoComplete="cc-number"
                       value={cardNumber}
                       onChange={(e) =>
                         setCardNumber(formatCardNumber(e.target.value))
                       }
                       placeholder="4242 4242 4242 4242"
+                      aria-required="true"
                       className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2276E3]/20 focus:border-[#2276E3] transition-all font-mono"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                    <label htmlFor="checkout-card-name" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
                       Name on Card
                     </label>
                     <input
+                      id="checkout-card-name"
                       type="text"
+                      autoComplete="cc-name"
                       value={cardName}
                       onChange={(e) => setCardName(e.target.value)}
                       placeholder="Name as it appears on card"
+                      aria-required="true"
                       className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2276E3]/20 focus:border-[#2276E3] transition-all"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                      <label htmlFor="checkout-expiry" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
                         Expiry Date
                       </label>
                       <input
+                        id="checkout-expiry"
                         type="text"
+                        inputMode="numeric"
+                        autoComplete="cc-exp"
                         value={expiry}
                         onChange={(e) =>
                           setExpiry(formatExpiry(e.target.value))
                         }
                         placeholder="MM / YY"
+                        aria-required="true"
                         className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2276E3]/20 focus:border-[#2276E3] transition-all font-mono"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                      <label htmlFor="checkout-cvv" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
                         CVV
                       </label>
                       <input
+                        id="checkout-cvv"
                         type="text"
+                        inputMode="numeric"
+                        autoComplete="cc-csc"
                         value={cvv}
                         onChange={(e) =>
                           setCvv(
@@ -291,6 +308,8 @@ export default function Checkout() {
                           )
                         }
                         placeholder="···"
+                        aria-required="true"
+                        aria-label="Card security code"
                         className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2276E3]/20 focus:border-[#2276E3] transition-all font-mono"
                       />
                     </div>

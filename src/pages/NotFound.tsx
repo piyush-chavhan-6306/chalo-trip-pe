@@ -19,14 +19,14 @@ export default function NotFound() {
       </nav>
 
       {/* Content */}
-      <div className="flex-1 flex items-center justify-center px-4">
+      <main className="flex-1 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-[#2276E3]/10 mb-6">
+          <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-[#2276E3]/10 mb-6" aria-hidden="true">
             <MapPin className="h-10 w-10 text-[#2276E3]" />
           </div>
           <h1 className="text-5xl font-bold text-gray-900 mb-2">404</h1>
@@ -41,7 +41,7 @@ export default function NotFound() {
             <ArrowRight className="h-4 w-4" />
           </Link>
         </motion.div>
-      </div>
+      </main>
     </div>
   );
 }

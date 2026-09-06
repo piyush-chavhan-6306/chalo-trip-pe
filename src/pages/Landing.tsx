@@ -125,6 +125,11 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-stone-900 overflow-x-hidden">
+      {/* Skip to content link for keyboard users */}
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-stone-900 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
+        Skip to main content
+      </a>
+
       {/* ═══ Navigation ═══ */}
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
@@ -248,6 +253,7 @@ export default function Landing() {
                   placeholder="Search for a destination, activity, or vibe..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
+                  aria-label="Search destinations"
                   className="w-full rounded-xl border border-stone-200 bg-stone-50 pl-11 pr-4 py-3.5 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-300 transition-all"
                 />
               </div>
@@ -262,8 +268,8 @@ export default function Landing() {
                   <Users className="h-4 w-4 text-stone-400" />
                   <span className="text-xs text-stone-600">{travellers} Travellers</span>
                 </div>
-                <button className="ml-auto flex items-center gap-2 rounded-xl bg-stone-900 px-5 py-2.5 text-sm font-medium text-[#FAF8F5] hover:bg-stone-800 transition-colors">
-                  <Search className="h-4 w-4" />
+                <button className="ml-auto flex items-center gap-2 rounded-xl bg-stone-900 px-5 py-2.5 text-sm font-medium text-[#FAF8F5] hover:bg-stone-800 transition-colors" aria-label="Search destinations">
+                  <Search className="h-4 w-4" aria-hidden="true" />
                   Search
                 </button>
               </div>
@@ -295,6 +301,7 @@ export default function Landing() {
       </motion.section>
 
       {/* ═══ Trending / Popular Strip ═══ */}
+      <main id="main-content">
       <section className="py-12 border-b border-stone-200/40">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <motion.div
@@ -375,7 +382,7 @@ export default function Landing() {
                   <div className="absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-white/10 group-hover:scale-150 transition-transform duration-500" />
 
                   <div className="relative z-10">
-                    <span className="text-2xl mb-3 block">{deal.icon}</span>
+                    <span className="text-2xl mb-3 block" aria-hidden="true">{deal.icon}</span>
                     <p className="text-2xl font-bold tracking-tight mb-1">{deal.discount}</p>
                     <p className="text-sm font-medium text-white/90">{deal.title}</p>
                     <p className="text-xs text-white/60 mt-0.5">{deal.subtitle}</p>
@@ -416,6 +423,8 @@ export default function Landing() {
                 <button
                   key={r.key}
                   onClick={() => setActiveRegion(r.key)}
+                  aria-pressed={activeRegion === r.key}
+                  aria-label={`Filter by ${r.label} region`}
                   className={`rounded-full px-4 py-2 text-xs font-medium transition-all duration-300 border ${
                     activeRegion === r.key
                       ? "bg-stone-900 text-[#FAF8F5] border-stone-900 shadow-sm"
@@ -648,6 +657,8 @@ export default function Landing() {
           </motion.div>
         </div>
       </section>
+
+      </main>
 
       {/* ═══ Footer ═══ */}
       <footer className="border-t border-stone-200/60 bg-[#F5F3F0]">

@@ -188,8 +188,8 @@ export default function Dashboard() {
       {/* ─── Tabs ─── */}
       <div className="bg-white border-b border-gray-200">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="flex gap-0">
-            {(
+          <div className="flex gap-0">              <div role="tablist" aria-label="Trip categories">
+              {(
               [
                 { key: "upcoming", label: "Upcoming", count: upcoming.length },
                 { key: "past", label: "Past Trips", count: past.length },
@@ -198,6 +198,10 @@ export default function Dashboard() {
             ).map((tab) => (
               <button
                 key={tab.key}
+                role="tab"
+                aria-selected={activeTab === tab.key}
+                aria-controls={`tabpanel-${tab.key}`}
+                id={`tab-${tab.key}`}
                 onClick={() => setActiveTab(tab.key)}
                 className={`relative px-5 py-3.5 text-sm font-semibold transition-colors ${
                   activeTab === tab.key
@@ -226,6 +230,7 @@ export default function Dashboard() {
                 )}
               </button>
             ))}
+              </div>
           </div>
         </div>
       </div>
@@ -236,6 +241,9 @@ export default function Dashboard() {
           {activeTab === "upcoming" && (
             <motion.div
               key="upcoming"
+              id="tabpanel-upcoming"
+              role="tabpanel"
+              aria-labelledby="tab-upcoming"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
@@ -261,6 +269,9 @@ export default function Dashboard() {
           {activeTab === "past" && (
             <motion.div
               key="past"
+              id="tabpanel-past"
+              role="tabpanel"
+              aria-labelledby="tab-past"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
@@ -286,6 +297,9 @@ export default function Dashboard() {
           {activeTab === "saved" && (
             <motion.div
               key="saved"
+              id="tabpanel-saved"
+              role="tabpanel"
+              aria-labelledby="tab-saved"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}

@@ -125,12 +125,13 @@ export default function Plan() {
             className="mt-5 space-y-4"
           >
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-gray-400" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-gray-400" aria-hidden="true" />
               <input
                 type="text"
                 placeholder="Search by destination, country, or activity..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                aria-label="Search destinations"
                 className="w-full rounded-xl border border-gray-200 bg-gray-50 pl-11 pr-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2276E3]/20 focus:border-[#2276E3] transition-all"
               />
             </div>
@@ -140,6 +141,8 @@ export default function Plan() {
                 <button
                   key={r.key}
                   onClick={() => setActiveRegion(r.key)}
+                  aria-pressed={activeRegion === r.key}
+                  aria-label={`Filter by ${r.label} region`}
                   className={`rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200 border ${
                     activeRegion === r.key
                       ? "bg-[#2276E3] text-white border-[#2276E3] shadow-sm"
