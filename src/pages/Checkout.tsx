@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useSearchParams, Link } from "react-router";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
   Lock,
   CreditCard,
+  Check,
   Shield,
   Calendar,
   MapPin,
@@ -31,7 +32,6 @@ export default function Checkout() {
   const [isConfirmed, setIsConfirmed] = useState(false);
 
   const price = slot ? slot.price * 85 * 2 : 0;
-  const [bookingRef] = useState(() => `CTP-${Date.now().toString(36).toUpperCase()}`);
 
   function formatCardNumber(val: string) {
     const digits = val.replace(/\D/g, "").slice(0, 16);
@@ -119,7 +119,7 @@ export default function Checkout() {
                     2 Travellers
                   </p>
                   <p className="text-xs text-stone-400">
-                    Booking ref: {bookingRef}
+                    Booking ref: CTP-{Date.now().toString(36).toUpperCase()}
                   </p>
                 </div>
               </div>
