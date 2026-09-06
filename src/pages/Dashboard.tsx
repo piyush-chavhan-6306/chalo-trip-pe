@@ -147,7 +147,7 @@ export default function Dashboard() {
               </div>
             </div>
             <Link
-              to="/"
+              to="/plan"
               className="inline-flex items-center gap-2 rounded-lg bg-[#2276E3] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#1A5DB8] transition-colors self-start shadow-sm"
             >
               Plan a New Trip
