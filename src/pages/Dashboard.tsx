@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -16,17 +16,71 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import {
-  mockProfile,
   mockBookings,
   mockSavedDestinations,
 } from "@/data/userBookings";
 
 type Tab = "upcoming" | "past" | "saved";
 
+/** Derive a display name and avatar initials from the Convex user object */
+function getUserProfile(user: {
+  name?: string;
+  email?: string;
+  isAnonymous?: boolean;
+} | null | undefined) {
+  if (!user) {
+    return { displayName: "Traveller", initials: "T", isGuest: false };
+  }
+
+  const isGuest = user.isAnonymous === true;
+
+  if (isGuest) {
+    return { displayName: "Guest", initials: "G", isGuest: true };
+  }
+
+  if (user.name && user.name.trim()) {
+    const parts = user.name.trim().split(/\s+/);
+    const initials =
+      parts.length >= 2
+        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+        : parts[0].slice(0, 2).toUpperCase();
+    return { displayName: user.name.trim(), initials, isGuest: false };
+  }
+
+  if (user.email) {
+    const localPart = user.email.split("@")[0];
+    const nameFromEmail = localPart
+      .replace(/[._-]/g, " ")
+      .replace(/\d+/g, "")
+      .trim();
+    if (nameFromEmail) {
+      const cap = nameFromEmail
+        .split(/\s+/)
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
+      const initials = nameFromEmail
+        .split(/\s+/)
+        .map((w) => w.charAt(0).toUpperCase())
+        .join("")
+        .slice(0, 2);
+      return { displayName: cap, initials, isGuest: false };
+    }
+    return {
+      displayName: localPart,
+      initials: localPart.slice(0, 2).toUpperCase(),
+      isGuest: false,
+    };
+  }
+
+  return { displayName: "Traveller", initials: "T", isGuest: false };
+}
+
 export default function Dashboard() {
-  const { signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>("upcoming");
+
+  const profile = useMemo(() => getUserProfile(user), [user]);
 
   const upcoming = mockBookings.filter((b) => b.status === "upcoming");
   const past = mockBookings.filter((b) => b.status === "completed");
@@ -77,14 +131,18 @@ export default function Dashboard() {
           >
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#2276E3] text-lg font-bold text-white">
-                {mockProfile.avatar}
+                {profile.initials}
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">
-                  Welcome, {mockProfile.name}!
+                  Welcome{profile.isGuest ? "" : `, ${profile.displayName}`}!
                 </h1>
                 <p className="text-sm text-gray-500">
-                  Member since {mockProfile.memberSince} · {mockProfile.totalTrips} trips completed
+                  {user?.email
+                    ? user.email
+                    : profile.isGuest
+                      ? "Guest account · Sign in to save trips"
+                      : "Your weekend escape dashboard"}
                 </p>
               </div>
             </div>
