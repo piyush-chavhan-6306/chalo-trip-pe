@@ -1,16 +1,41 @@
+export interface TimeSlot {
+  id: string;
+  date: string;
+  day: string;
+  time: string;
+  spots: number;
+  price: number;
+}
+
+export interface Review {
+  id: string;
+  author: string;
+  avatar: string;
+  rating: number;
+  date: string;
+  text: string;
+}
+
 export interface Destination {
   id: string;
   name: string;
   country: string;
+  region: string;
   tagline: string;
   description: string;
+  longDescription: string;
   image: string;
+  gallery: string[];
   price: number;
   duration: string;
   bestTime: string;
   highlights: string[];
+  inclusions: string[];
   rating: number;
+  reviewCount: number;
   color: string;
+  timeSlots: TimeSlot[];
+  reviews: Review[];
 }
 
 export const destinations: Destination[] = [
@@ -18,96 +43,339 @@ export const destinations: Destination[] = [
     id: "santorini",
     name: "Santorini",
     country: "Greece",
+    region: "europe",
     tagline: "Whitewashed cliffs above an azure sea",
     description:
       "Wander through narrow cobblestone paths, watch the sun melt into the caldera, and let the blue-domed churches frame your perfect weekend escape.",
+    longDescription:
+      "Santorini is a crescent of volcanic islands in the Aegean Sea, famous for its dramatic cliffside villages and sunsets that redefine the colour orange. The island's whitewashed architecture spills down the caldera rim, punctuated by blue-domed churches and bougainvillea-draped terraces. Walk through the narrow lanes of Oia, taste wines grown in volcanic soil, and unwind on beaches of black and red sand. This is not just a trip — it is a pause from everything.",
     image:
       "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&q=80&auto=format&fit=crop",
+    gallery: [
+      "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=600&q=80&auto=format&fit=crop",
+    ],
     price: 420,
     duration: "3 days",
     bestTime: "May – October",
-    highlights: ["Oia sunset", "Red Beach", "Wine tasting"],
+    highlights: [
+      "Oia sunset viewpoint",
+      "Red Beach walk",
+      "Caldera wine tasting",
+      "Fira to Oia hike",
+    ],
+    inclusions: [
+      "Return flights",
+      "Boutique hotel stay",
+      "Daily breakfast",
+      "Airport transfers",
+    ],
     rating: 4.9,
+    reviewCount: 312,
     color: "#4A90D9",
+    timeSlots: [
+      { id: "s1", date: "Sep 12", day: "Fri", time: "Morning", spots: 4, price: 420 },
+      { id: "s2", date: "Sep 19", day: "Fri", time: "Morning", spots: 2, price: 420 },
+      { id: "s3", date: "Sep 26", day: "Fri", time: "Afternoon", spots: 6, price: 395 },
+      { id: "s4", date: "Oct 3", day: "Fri", time: "Morning", spots: 8, price: 395 },
+    ],
+    reviews: [
+      {
+        id: "r1",
+        author: "Priya M.",
+        avatar: "PM",
+        rating: 5,
+        date: "Aug 2026",
+        text: "The sunset from Oia was everything the photos promise and more. The wine tasting was an unexpected highlight — volcanic soil wines are something else entirely.",
+      },
+      {
+        id: "r2",
+        author: "Arjun K.",
+        avatar: "AK",
+        rating: 5,
+        date: "Jul 2026",
+        text: "Perfectly curated. The boutique hotel had a caldera view that made waking up feel like a luxury. Would book again without hesitation.",
+      },
+    ],
   },
   {
     id: "kyoto",
     name: "Kyoto",
     country: "Japan",
+    region: "asia",
     tagline: "Zen gardens and ancient temples",
     description:
       "Stroll through bamboo groves, discover centuries-old shrines, and savor the quiet beauty of Japan's cultural heart in a weekend of contemplation and wonder.",
+    longDescription:
+      "Kyoto is Japan's cultural soul — a city where 2,000 temples and shrines sit alongside tea houses, geisha districts, and bamboo forests. Walk through the towering green stalks of Arashiyama, witness the vermillion gates of Fushimi Inari stretching up the mountainside, and participate in a centuries-old tea ceremony. Kyoto rewards slowness: the quieter you become, the more you notice — the sound of water in a stone basin, the scent of incense drifting through a wooden hall.",
     image:
       "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80&auto=format&fit=crop",
+    gallery: [
+      "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80&auto=format&fit=crop",
+    ],
     price: 580,
     duration: "3 days",
     bestTime: "March – May",
-    highlights: ["Bamboo grove", "Kinkaku-ji", "Tea ceremony"],
+    highlights: [
+      "Arashiyama Bamboo Grove",
+      "Kinkaku-ji Golden Pavilion",
+      "Traditional tea ceremony",
+      "Philosopher's Path walk",
+    ],
+    inclusions: [
+      "Return flights",
+      "Ryokan stay with kaiseki dinner",
+      "JR rail pass",
+      "Guided temple tour",
+    ],
     rating: 4.8,
+    reviewCount: 247,
     color: "#6B8E6B",
+    timeSlots: [
+      { id: "k1", date: "Oct 10", day: "Fri", time: "Morning", spots: 3, price: 580 },
+      { id: "k2", date: "Oct 17", day: "Fri", time: "Morning", spots: 5, price: 560 },
+      { id: "k3", date: "Oct 24", day: "Fri", time: "Afternoon", spots: 6, price: 560 },
+    ],
+    reviews: [
+      {
+        id: "r3",
+        author: "Neha S.",
+        avatar: "NS",
+        rating: 5,
+        date: "Sep 2026",
+        text: "The ryokan experience was beyond anything I expected. Sleeping on tatami, waking to a kaiseki breakfast — it felt like stepping into another century.",
+      },
+      {
+        id: "r4",
+        author: "Vikram R.",
+        avatar: "VR",
+        rating: 4,
+        date: "Aug 2026",
+        text: "Kyoto during autumn is magical. The bamboo grove at dawn, with almost no one around, was the most peaceful moment of my life.",
+      },
+    ],
   },
   {
     id: "marrakech",
     name: "Marrakech",
     country: "Morocco",
+    region: "africa",
     tagline: "Spice-scented souks and golden light",
     description:
       "Lose yourself in the labyrinthine medina, sip mint tea on a rooftop terrace, and watch the evening sky blush over the Atlas Mountains.",
+    longDescription:
+      "Marrakech is a city of contrasts — the ancient medina's narrow alleys open suddenly onto sunlit squares, where snake charmers and spice merchants have gathered for centuries. Beyond the souks, hidden riads offer courtyards of tranquil greenery and intricate tilework. The Jardin Majorelle, once owned by Yves Saint Laurent, bursts with cobalt blue and cactus green. As the sun sets, the Djemaa el-Fna transforms into an open-air theatre of food stalls, musicians, and storytellers. This is a city that engages every sense.",
     image:
       "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?w=800&q=80&auto=format&fit=crop",
+    gallery: [
+      "https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=600&q=80&auto=format&fit=crop",
+    ],
     price: 350,
     duration: "3 days",
     bestTime: "March – May",
-    highlights: ["Jemaa el-Fnaa", "Majorelle Garden", "Hammam"],
+    highlights: [
+      "Jemaa el-Fnaa square",
+      "Majorelle Garden",
+      "Traditional hammam",
+      "Atlas Mountains day trip",
+    ],
+    inclusions: [
+      "Return flights",
+      "Riad accommodation",
+      "Daily breakfast",
+      "Guided medina tour",
+    ],
     rating: 4.7,
+    reviewCount: 189,
     color: "#D4A574",
+    timeSlots: [
+      { id: "m1", date: "Sep 12", day: "Fri", time: "Morning", spots: 6, price: 350 },
+      { id: "m2", date: "Sep 26", day: "Fri", time: "Afternoon", spots: 4, price: 335 },
+      { id: "m3", date: "Oct 10", day: "Fri", time: "Morning", spots: 7, price: 335 },
+    ],
+    reviews: [
+      {
+        id: "r5",
+        author: "Riya T.",
+        avatar: "RT",
+        rating: 5,
+        date: "Jul 2026",
+        text: "The hammam was transformative. And the food — the tagine, the couscous, the fresh orange juice — I am still thinking about it months later.",
+      },
+    ],
   },
   {
     id: "amalfi",
     name: "Amalfi Coast",
     country: "Italy",
+    region: "europe",
     tagline: "Pastel villages cascading to the sea",
     description:
       "Drive winding coastal roads, swim in hidden coves, and feast on fresh limoncello and seafood while the Mediterranean breeze carries your worries away.",
+    longDescription:
+      "The Amalfi Coast is a 50-kilometre stretch of Italian coastline that looks as though it was designed by a Renaissance painter with a flair for drama. Pastel villages cling to cliff faces, connected by hairpin roads that reveal one jaw-dropping vista after another. Positano's pink and terracotta houses tumble toward a pebble beach, while Ravello's hilltop gardens offer sweeping views of the Tyrrhenian Sea. Eat freshly caught seafood, drink limoncello made from lemons the size of your head, and let the Mediterranean sun do the rest.",
     image:
       "https://images.unsplash.com/photo-1633321702518-7fecdafb94d5?w=800&q=80&auto=format&fit=crop",
+    gallery: [
+      "https://images.unsplash.com/photo-1534113414509-0eec2bfb493f?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1633321702518-7fecdafb94d5?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1455587734955-081b22074882?w=600&q=80&auto=format&fit=crop",
+    ],
     price: 510,
     duration: "4 days",
     bestTime: "April – September",
-    highlights: ["Positano stroll", "Lemon groves", "Coastal drive"],
+    highlights: [
+      "Positano village stroll",
+      "Lemon grove visit",
+      "Coastal scenic drive",
+      "Ravello garden concert",
+    ],
+    inclusions: [
+      "Return flights",
+      "Seaside hotel",
+      "Daily breakfast and dinner",
+      "Private coastal transfer",
+    ],
     rating: 4.8,
+    reviewCount: 276,
     color: "#E8B86D",
+    timeSlots: [
+      { id: "a1", date: "Sep 12", day: "Fri", time: "Morning", spots: 2, price: 510 },
+      { id: "a2", date: "Sep 19", day: "Fri", time: "Morning", spots: 4, price: 490 },
+      { id: "a3", date: "Oct 3", day: "Fri", time: "Afternoon", spots: 5, price: 475 },
+    ],
+    reviews: [
+      {
+        id: "r6",
+        author: "Kabir D.",
+        avatar: "KD",
+        rating: 5,
+        date: "Aug 2026",
+        text: "The private coastal transfer was worth every rupee. Stopping at hidden beaches that no guidebook mentions — that is the real Amalfi.",
+      },
+      {
+        id: "r7",
+        author: "Meera L.",
+        avatar: "ML",
+        rating: 5,
+        date: "Jul 2026",
+        text: "Ravello at sunset, with live classical music drifting through the gardens — I have never felt so perfectly content.",
+      },
+    ],
   },
   {
     id: "banff",
     name: "Banff",
     country: "Canada",
+    region: "americas",
     tagline: "Turquoise lakes beneath towering peaks",
     description:
       "Breathe in crisp mountain air, kayak across impossible blue water, and find stillness among the dramatic landscapes of the Canadian Rockies.",
+    longDescription:
+      "Banff National Park is where nature shows off without apology. Lake Louise's impossible turquoise, Moraine Lake's reflection of the Valley of the Ten Peaks, and the endless stretches of pine forest — every frame looks like a wallpaper. But Banff is not just for looking. Hike through alpine meadows, paddle across glacial lakes, soak in natural hot springs, and ride the Banff Gondola for a panorama that stretches to the horizon. This is the kind of place that makes you remember why you started travelling.",
     image:
       "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=800&q=80&auto=format&fit=crop",
+    gallery: [
+      "https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80&auto=format&fit=crop",
+    ],
     price: 390,
     duration: "3 days",
     bestTime: "June – September",
-    highlights: ["Lake Louise", "Moraine Lake", "Gondola ride"],
+    highlights: [
+      "Lake Louise sunrise",
+      "Moraine Lake paddle",
+      "Banff Gondola ride",
+      "Natural hot springs soak",
+    ],
+    inclusions: [
+      "Return flights",
+      "Mountain lodge stay",
+      "Daily breakfast",
+      "National park pass",
+    ],
     rating: 4.9,
+    reviewCount: 203,
     color: "#2E8B57",
+    timeSlots: [
+      { id: "b1", date: "Sep 12", day: "Fri", time: "Morning", spots: 5, price: 390 },
+      { id: "b2", date: "Sep 19", day: "Fri", time: "Morning", spots: 3, price: 390 },
+      { id: "b3", date: "Oct 3", day: "Fri", time: "Afternoon", spots: 7, price: 370 },
+    ],
+    reviews: [
+      {
+        id: "r8",
+        author: "Ananya P.",
+        avatar: "AP",
+        rating: 5,
+        date: "Aug 2026",
+        text: "Lake Louise at 6 AM, before the crowds — just me, the mountains, and that impossible blue water. Nothing else comes close.",
+      },
+    ],
   },
   {
     id: "lisbon",
     name: "Lisbon",
     country: "Portugal",
+    region: "europe",
     tagline: "Tile-clad streets and golden hour charm",
     description:
-      "Ride vintage trams through pastel neighborhoods, listen to fado echoing from tiny taverns, and taste the city's legendary pastéis de nata.",
+      "Ride vintage trams through pastel neighbourhoods, listen to fado echoing from tiny taverns, and taste the city's legendary pastéis de nata.",
+    longDescription:
+      "Lisbon is a city that wears its age beautifully. Seven hills carpeted in pastel azulejo tiles, vintage trams rattling through narrow streets, and fado music drifting from candlelit taverns in the Alfama district. The city's food scene is having a moment — from the custard tarts of Belém to the innovative small plates of the LX Factory. Watch the sunset from the São Jorge Castle ramparts, browse the boutiques of Príncipe Real, and end the night with a glass of Vinho Verde on a rooftop overlooking the Tagus River.",
     image:
       "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=800&q=80&auto=format&fit=crop",
+    gallery: [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1513735492404-3326ad8a1a0c?w=600&q=80&auto=format&fit=crop",
+    ],
     price: 320,
     duration: "3 days",
     bestTime: "March – October",
-    highlights: ["Alfama district", "Belém Tower", "Time Out Market"],
+    highlights: [
+      "Alfama fado evening",
+      "Belém Tower and pastry",
+      "Time Out Market tasting",
+      "Sunset from São Jorge",
+    ],
+    inclusions: [
+      "Return flights",
+      "Boutique hotel stay",
+      "Daily breakfast",
+      "Fado dinner experience",
+    ],
     rating: 4.7,
+    reviewCount: 224,
     color: "#C4956A",
+    timeSlots: [
+      { id: "l1", date: "Sep 12", day: "Fri", time: "Morning", spots: 6, price: 320 },
+      { id: "l2", date: "Sep 19", day: "Fri", time: "Afternoon", spots: 4, price: 320 },
+      { id: "l3", date: "Oct 3", day: "Fri", time: "Morning", spots: 8, price: 299 },
+    ],
+    reviews: [
+      {
+        id: "r9",
+        author: "Rohan G.",
+        avatar: "RG",
+        rating: 5,
+        date: "Aug 2026",
+        text: "The fado dinner was the emotional highlight. Candles, wine, a voice that made the whole room go silent — I did not expect to cry at a holiday dinner.",
+      },
+      {
+        id: "r10",
+        author: "Simran J.",
+        avatar: "SJ",
+        rating: 4,
+        date: "Jul 2026",
+        text: "Lisbon is underrated. The tiles, the trams, the pastéis de nata at 11 PM — it is the kind of city that makes you want to extend your trip.",
+      },
+    ],
   },
 ];

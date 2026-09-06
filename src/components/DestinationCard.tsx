@@ -1,4 +1,5 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState } from "react";
+import { Link } from "react-router";
 import {
   motion,
   useMotionValue,
@@ -6,37 +7,28 @@ import {
   useTransform,
   useMotionTemplate,
 } from "framer-motion";
-import { Star, Clock, MapPin } from "lucide-react";
+import { Star, Clock, MapPin, ArrowUpRight } from "lucide-react";
 import type { Destination } from "@/data/destinations";
 
 interface DestinationCardProps {
   destination: Destination;
   index: number;
-  children?: ReactNode;
 }
 
-export function DestinationCard({
-  destination,
-  index,
-  children,
-}: DestinationCardProps) {
+export function DestinationCard({ destination, index }: DestinationCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Mouse position tracking
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Smooth spring for tilt
   const springConfig = { damping: 25, stiffness: 150, mass: 0.5 };
   const rotateX = useSpring(0, springConfig);
   const rotateY = useSpring(0, springConfig);
 
-  // Shine effect position
   const shineX = useSpring(0, springConfig);
   const shineY = useSpring(0, springConfig);
 
-  // Gradient overlay
   const background = useMotionTemplate`radial-gradient(
     350px circle at ${shineX}px ${shineY}px,
     ${destination.color}15,
@@ -53,18 +45,10 @@ export function DestinationCard({
 
     mouseX.set(x);
     mouseY.set(y);
-
-    // 3D tilt: rotate based on mouse offset
     rotateX.set(-y / 12);
     rotateY.set(x / 12);
-
-    // Shine follows mouse relative to card center
     shineX.set(x + rect.width / 2);
     shineY.set(y + rect.height / 2);
-  }
-
-  function handleMouseEnter() {
-    setIsHovered(true);
   }
 
   function handleMouseLeave() {
@@ -87,7 +71,7 @@ export function DestinationCard({
         ease: [0.22, 1, 0.36, 1],
       }}
       onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
       className="group relative"
       style={{ perspective: 1200 }}
@@ -107,22 +91,19 @@ export function DestinationCard({
         />
 
         {/* Image */}
-        <div
-          className="relative aspect-[4/3] overflow-hidden"
+        <Link
+          to={`/destination/${destination.id}`}
+          className="block relative aspect-[4/3] overflow-hidden"
           style={{ transform: "translateZ(0)" }}
         >
           <motion.img
             src={destination.image}
             alt={destination.name}
             className="h-full w-full object-cover"
-            animate={{
-              scale: isHovered ? 1.06 : 1,
-            }}
+            animate={{ scale: isHovered ? 1.06 : 1 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           />
-
-          {/* Subtle bottom gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
 
           {/* Price badge */}
           <div
@@ -130,7 +111,7 @@ export function DestinationCard({
             style={{ transform: "translateZ(20px)" }}
           >
             <span className="text-sm font-semibold tracking-tight text-stone-800">
-              ${destination.price}
+              ₹{(destination.price * 85).toLocaleString("en-IN")}
             </span>
             <span className="text-xs text-stone-500 ml-0.5">/trip</span>
           </div>
@@ -144,12 +125,32 @@ export function DestinationCard({
             <span className="text-xs font-semibold text-stone-700">
               {destination.rating}
             </span>
+            <span className="text-[10px] text-stone-400">
+              ({destination.reviewCount})
+            </span>
           </div>
-        </div>
+
+          {/* View CTA on hover */}
+          <motion.div
+            className="absolute bottom-4 right-4 z-10"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 8 }}
+            transition={{ duration: 0.3 }}
+            style={{ transform: "translateZ(15px)" }}
+          >
+            <div className="flex items-center gap-1.5 rounded-full bg-stone-900 px-4 py-2 text-xs font-medium text-[#FAF8F5]">
+              View Trip
+              <ArrowUpRight className="h-3 w-3" />
+            </div>
+          </motion.div>
+        </Link>
 
         {/* Content */}
-        <div className="relative p-5 pb-6" style={{ transform: "translateZ(10px)" }}>
-          {/* Location tag */}
+        <Link
+          to={`/destination/${destination.id}`}
+          className="block relative p-5 pb-6"
+          style={{ transform: "translateZ(10px)" }}
+        >
           <div className="mb-2.5 flex items-center gap-1.5 text-stone-400">
             <MapPin className="h-3.5 w-3.5" />
             <span className="text-xs font-medium tracking-widest uppercase">
@@ -157,23 +158,19 @@ export function DestinationCard({
             </span>
           </div>
 
-          {/* Name */}
           <h3 className="text-xl font-semibold tracking-tight text-stone-900 mb-1">
             {destination.name}
           </h3>
 
-          {/* Tagline */}
           <p className="text-sm text-stone-500 italic mb-3">
             {destination.tagline}
           </p>
 
-          {/* Description */}
           <p className="text-sm leading-relaxed text-stone-600 mb-4 line-clamp-3">
             {destination.description}
           </p>
 
-          {/* Meta row */}
-          <div className="flex items-center gap-4 mb-4 text-xs text-stone-400">
+          <div className="flex items-center gap-4 text-xs text-stone-400">
             <div className="flex items-center gap-1.5">
               <Clock className="h-3.5 w-3.5" />
               <span>{destination.duration}</span>
@@ -182,9 +179,8 @@ export function DestinationCard({
             <span>{destination.bestTime}</span>
           </div>
 
-          {/* Highlights */}
-          <div className="flex flex-wrap gap-1.5">
-            {destination.highlights.map((h) => (
+          <div className="flex flex-wrap gap-1.5 mt-4">
+            {destination.highlights.slice(0, 3).map((h) => (
               <span
                 key={h}
                 className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600 border border-stone-100"
@@ -193,9 +189,7 @@ export function DestinationCard({
               </span>
             ))}
           </div>
-
-          {children}
-        </div>
+        </Link>
       </motion.div>
     </motion.div>
   );

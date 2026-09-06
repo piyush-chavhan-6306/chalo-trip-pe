@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Compass, ArrowUpRight } from "lucide-react";
+import {
+  MapPin,
+  Compass,
+  ArrowUpRight,
+  Search,
+  SlidersHorizontal,
+} from "lucide-react";
 import { DestinationCard } from "@/components/DestinationCard";
 import { destinations } from "@/data/destinations";
 
-type Filter = "all" | "europe" | "asia" | "americas" | "africa";
+type Region = "all" | "europe" | "asia" | "americas" | "africa";
 
-const filters: { key: Filter; label: string }[] = [
+const regions: { key: Region; label: string }[] = [
   { key: "all", label: "All Destinations" },
   { key: "europe", label: "Europe" },
   { key: "asia", label: "Asia" },
@@ -14,38 +20,52 @@ const filters: { key: Filter; label: string }[] = [
   { key: "africa", label: "Africa" },
 ];
 
-const regionMap: Record<string, Filter> = {
-  Greece: "europe",
-  Italy: "europe",
-  Portugal: "europe",
-  Japan: "asia",
-  Canada: "americas",
-  Morocco: "africa",
-};
-
 export default function Landing() {
-  const [activeFilter, setActiveFilter] = useState<Filter>("all");
+  const [activeRegion, setActiveRegion] = useState<Region>("all");
+  const [search, setSearch] = useState("");
 
-  const filtered =
-    activeFilter === "all"
-      ? destinations
-      : destinations.filter((d) => regionMap[d.country] === activeFilter);
+  const filtered = useMemo(() => {
+    let list =
+      activeRegion === "all"
+        ? destinations
+        : destinations.filter((d) => d.region === activeRegion);
+
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      list = list.filter(
+        (d) =>
+          d.name.toLowerCase().includes(q) ||
+          d.country.toLowerCase().includes(q) ||
+          d.tagline.toLowerCase().includes(q) ||
+          d.highlights.some((h) => h.toLowerCase().includes(q)),
+      );
+    }
+
+    return list;
+  }, [activeRegion, search]);
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-stone-900">
       {/* ─── Navigation ─── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FAF8F5]/80 backdrop-blur-lg border-b border-stone-200/50">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FAF8F5]/85 backdrop-blur-xl border-b border-stone-200/50">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-stone-900">
-                <Compass className="h-4 w-4 text-[#FAF8F5]" />
+            {/* Brand */}
+            <a href="/" className="flex items-center gap-3 group">
+              <div className="flex items-center justify-center h-9 w-9 rounded-xl bg-stone-900 group-hover:bg-stone-800 transition-colors">
+                <Compass className="h-4.5 w-4.5 text-[#FAF8F5]" />
               </div>
-              <span className="text-lg font-semibold tracking-tight text-stone-900">
-                Wanderlust
-              </span>
-            </div>
+              <div className="flex flex-col">
+                <span className="text-[15px] font-semibold tracking-tight text-stone-900 leading-none">
+                  Chalo Trip Pe
+                </span>
+                <span className="text-[10px] tracking-[0.18em] uppercase text-stone-400 mt-0.5">
+                  Weekend Escapes
+                </span>
+              </div>
+            </a>
 
+            {/* Nav links */}
             <div className="hidden md:flex items-center gap-8 text-sm text-stone-500">
               <a
                 href="#destinations"
@@ -54,25 +74,36 @@ export default function Landing() {
                 Destinations
               </a>
               <a href="#" className="hover:text-stone-900 transition-colors">
-                About
+                How It Works
               </a>
               <a href="#" className="hover:text-stone-900 transition-colors">
-                Journal
+                Stories
               </a>
             </div>
 
-            <button className="flex items-center gap-2 rounded-full bg-stone-900 px-5 py-2 text-sm font-medium text-[#FAF8F5] hover:bg-stone-800 transition-colors">
-              Start Planning
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </button>
+            {/* CTA */}
+            <div className="flex items-center gap-3">
+              <a
+                href="/auth"
+                className="hidden sm:inline-flex text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors"
+              >
+                Sign In
+              </a>
+              <a
+                href="/auth"
+                className="inline-flex items-center gap-2 rounded-full bg-stone-900 px-5 py-2.5 text-sm font-medium text-[#FAF8F5] hover:bg-stone-800 transition-colors"
+              >
+                Book Now
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
           </div>
         </div>
       </nav>
 
       {/* ─── Hero ─── */}
-      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
-        {/* Subtle background grain texture */}
-        <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==')]" />
+      <section className="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.025] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==')]"/>
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
           <div className="max-w-3xl">
@@ -81,15 +112,15 @@ export default function Landing() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-6 flex items-center gap-2.5"
+              className="mb-6 flex items-center gap-3"
             >
-              <div className="h-px w-8 bg-stone-400" />
-              <span className="text-xs font-medium tracking-[0.2em] uppercase text-stone-400">
-                Weekend Escapes
+              <div className="h-px w-10 bg-stone-300" />
+              <span className="text-xs font-medium tracking-[0.22em] uppercase text-stone-400">
+                Curated Weekend Escapes
               </span>
             </motion.div>
 
-            {/* Main heading */}
+            {/* Heading */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -100,9 +131,9 @@ export default function Landing() {
               }}
               className="text-5xl lg:text-7xl font-semibold tracking-tight text-stone-900 leading-[1.05]"
             >
-              Find your next
+              Where will your
               <br />
-              <span className="text-stone-400">weekend getaway</span>
+              <span className="text-stone-400">next weekend take you?</span>
             </motion.h1>
 
             {/* Subtitle */}
@@ -116,11 +147,11 @@ export default function Landing() {
               }}
               className="mt-6 text-lg text-stone-500 max-w-xl leading-relaxed"
             >
-              Curated destinations for short escapes — discover places worth
-              leaving home for, every weekend.
+              Handpicked destinations for short escapes. Browse, book, and be on
+              your way — we handle the details so you can enjoy the journey.
             </motion.p>
 
-            {/* CTA */}
+            {/* Stats row */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -129,62 +160,107 @@ export default function Landing() {
                 delay: 0.4,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="mt-8 flex items-center gap-4"
+              className="mt-10 flex items-center gap-8"
             >
-              <a
-                href="#destinations"
-                className="inline-flex items-center gap-2 rounded-full bg-stone-900 px-7 py-3 text-sm font-medium text-[#FAF8F5] hover:bg-stone-800 transition-colors"
-              >
-                Explore Destinations
-                <MapPin className="h-3.5 w-3.5" />
-              </a>
-              <span className="text-xs text-stone-400">
-                {destinations.length} curated spots
-              </span>
+              <div>
+                <p className="text-2xl font-semibold text-stone-900">
+                  {destinations.length}
+                </p>
+                <p className="text-xs text-stone-400 mt-0.5">Destinations</p>
+              </div>
+              <div className="h-8 w-px bg-stone-200" />
+              <div>
+                <p className="text-2xl font-semibold text-stone-900">
+                  1,451
+                </p>
+                <p className="text-xs text-stone-400 mt-0.5">Happy Travellers</p>
+              </div>
+              <div className="h-8 w-px bg-stone-200" />
+              <div>
+                <p className="text-2xl font-semibold text-stone-900">4.8</p>
+                <p className="text-xs text-stone-400 mt-0.5">Average Rating</p>
+              </div>
             </motion.div>
           </div>
 
-          {/* Decorative editorial line */}
+          {/* Editorial line */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
-            transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: 1.2,
+              delay: 0.5,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             className="mt-16 h-px bg-gradient-to-r from-stone-300 via-stone-200 to-transparent origin-left"
           />
         </div>
       </section>
 
-      {/* ─── Destinations Section ─── */}
+      {/* ─── Destinations ─── */}
       <section id="destinations" className="pb-24 lg:pb-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          {/* Section header */}
-          <div className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-            <div>
-              <h2 className="text-3xl lg:text-4xl font-semibold tracking-tight text-stone-900">
-                Destinations
-              </h2>
-              <p className="mt-2 text-sm text-stone-400">
-                Handpicked for a perfect short trip
-              </p>
+          {/* Section header + search + filters */}
+          <div className="mb-10">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-6">
+              <div>
+                <h2 className="text-3xl lg:text-4xl font-semibold tracking-tight text-stone-900">
+                  Destinations
+                </h2>
+                <p className="mt-2 text-sm text-stone-400">
+                  Each trip is fully curated — flights, stays, and experiences
+                  included
+                </p>
+              </div>
+
+              {/* Search */}
+              <div className="relative w-full lg:w-80">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
+                <input
+                  type="text"
+                  placeholder="Search destinations..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full rounded-xl border border-stone-200 bg-white pl-10 pr-4 py-2.5 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-300 transition-all"
+                />
+              </div>
             </div>
 
-            {/* Filter pills */}
+            {/* Region filters */}
             <div className="flex flex-wrap gap-2">
-              {filters.map((f) => (
+              {regions.map((r) => (
                 <button
-                  key={f.key}
-                  onClick={() => setActiveFilter(f.key)}
+                  key={r.key}
+                  onClick={() => setActiveRegion(r.key)}
                   className={`rounded-full px-4 py-2 text-xs font-medium transition-all duration-300 border ${
-                    activeFilter === f.key
+                    activeRegion === r.key
                       ? "bg-stone-900 text-[#FAF8F5] border-stone-900"
                       : "bg-transparent text-stone-500 border-stone-200 hover:border-stone-400 hover:text-stone-700"
                   }`}
                 >
-                  {f.label}
+                  {r.label}
                 </button>
               ))}
             </div>
           </div>
+
+          {/* Results count */}
+          {(search || activeRegion !== "all") && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-xs text-stone-400 mb-6"
+            >
+              Showing {filtered.length} destination
+              {filtered.length !== 1 ? "s" : ""}
+              {search ? ` for "${search}"` : ""}
+              {activeRegion !== "all"
+                ? ` in ${
+                    regions.find((r) => r.key === activeRegion)?.label
+                  }`
+                : ""}
+            </motion.p>
+          )}
 
           {/* Cards grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -208,16 +284,78 @@ export default function Landing() {
           <AnimatePresence>
             {filtered.length === 0 && (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
                 className="py-20 text-center"
               >
-                <p className="text-stone-400 text-sm">
-                  No destinations in this region yet.
+                <SlidersHorizontal className="h-8 w-8 text-stone-300 mx-auto mb-4" />
+                <p className="text-stone-500 text-sm font-medium">
+                  No destinations match your search.
+                </p>
+                <p className="text-stone-400 text-xs mt-1">
+                  Try a different keyword or browse all destinations.
                 </p>
               </motion.div>
             )}
           </AnimatePresence>
+        </div>
+      </section>
+
+      {/* ─── How It Works ─── */}
+      <section className="pb-24 lg:pb-32 border-t border-stone-200/60">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 pt-20">
+          <div className="text-center mb-16">
+            <p className="text-xs font-medium tracking-[0.22em] uppercase text-stone-400 mb-3">
+              Simple as it gets
+            </p>
+            <h2 className="text-3xl lg:text-4xl font-semibold tracking-tight text-stone-900">
+              How Chalo Trip Pe Works
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+            {[
+              {
+                step: "01",
+                title: "Browse & Choose",
+                desc: "Explore our curated collection of weekend escapes. Each destination is handpicked for quality, experience, and value.",
+              },
+              {
+                step: "02",
+                title: "Pick Your Dates",
+                desc: "Select a time slot that works for you. We offer flexible departure mornings and afternoons across multiple weekends.",
+              },
+              {
+                step: "03",
+                title: "Book & Go",
+                desc: "Complete your booking in minutes. Flights, stays, and experiences are all included — just pack your bags.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.6,
+                  delay: i * 0.1,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="text-center"
+              >
+                <div className="inline-flex items-center justify-center h-12 w-12 rounded-2xl bg-stone-100 text-stone-900 text-lg font-semibold mb-5">
+                  {item.step}
+                </div>
+                <h3 className="text-lg font-semibold text-stone-900 mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-stone-500 leading-relaxed max-w-xs mx-auto">
+                  {item.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -242,23 +380,33 @@ export default function Landing() {
       <footer className="border-t border-stone-200/60 bg-[#F5F3F0]">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-12">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div className="flex items-center gap-2.5">
-              <div className="flex items-center justify-center h-7 w-7 rounded-md bg-stone-900">
-                <Compass className="h-3.5 w-3.5 text-[#FAF8F5]" />
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-stone-900">
+                <Compass className="h-4 w-4 text-[#FAF8F5]" />
               </div>
-              <span className="text-sm font-semibold tracking-tight text-stone-900">
-                Wanderlust
-              </span>
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold tracking-tight text-stone-900 leading-none">
+                  Chalo Trip Pe
+                </span>
+                <span className="text-[9px] tracking-[0.18em] uppercase text-stone-400 mt-0.5">
+                  Weekend Escapes
+                </span>
+              </div>
             </div>
 
-            <div className="flex items-center gap-6 text-xs text-stone-400">
-              <span>© 2026 Wanderlust</span>
-              <a href="#" className="hover:text-stone-600 transition-colors">
-                Privacy
-              </a>
-              <a href="#" className="hover:text-stone-600 transition-colors">
-                Terms
-              </a>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-xs text-stone-400">
+              <span>© 2026 Chalo Trip Pe. All rights reserved.</span>
+              <div className="flex gap-4">
+                <a href="#" className="hover:text-stone-600 transition-colors">
+                  Privacy
+                </a>
+                <a href="#" className="hover:text-stone-600 transition-colors">
+                  Terms
+                </a>
+                <a href="#" className="hover:text-stone-600 transition-colors">
+                  Support
+                </a>
+              </div>
             </div>
           </div>
         </div>
