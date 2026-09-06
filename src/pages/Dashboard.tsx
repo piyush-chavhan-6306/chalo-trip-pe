@@ -12,7 +12,6 @@ import {
   ChevronRight,
   Compass,
   CreditCard,
-  Users,
   Plane,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";

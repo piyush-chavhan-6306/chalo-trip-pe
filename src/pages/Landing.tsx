@@ -7,8 +7,6 @@ import {
   Calendar,
   Users,
   Star,
-  Clock,
-  MapPin,
   ChevronRight,
   Compass,
   Sparkles,
@@ -93,7 +91,7 @@ export default function Landing() {
   const [activeRegion, setActiveRegion] = useState<Region>("all");
   const [search, setSearch] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
-  const [travellers, setTravellers] = useState(2);
+  const [travellers] = useState(2);
 
   const { scrollYProgress } = useScroll();
   const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
