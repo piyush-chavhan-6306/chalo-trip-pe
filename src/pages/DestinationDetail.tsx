@@ -23,6 +23,7 @@ export default function DestinationDetail() {
   const destination = destinations.find((d) => d.id === id);
 
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
+  const [travellers, setTravellers] = useState(2);
   const [commentText, setCommentText] = useState("");
   const [localReviews, setLocalReviews] = useState<Review[]>(
     destination?.reviews ?? [],
@@ -59,6 +60,7 @@ export default function DestinationDetail() {
   }
 
   const originalPrice = Math.round(destination.price * 85 * 1.2);
+  const totalPrice = selectedSlot ? selectedSlot.price * 85 * travellers : destination.price * 85 * travellers;
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -348,23 +350,20 @@ export default function DestinationDetail() {
                 <div className="bg-[#2276E3] p-5 text-white">
                   <div className="flex items-baseline gap-2">
                     <span className="text-3xl font-bold">
-                      ₹{(destination.price * 85).toLocaleString("en-IN")}
-                    </span>
-                    <span className="text-sm text-white/60 line-through">
-                      ₹{originalPrice.toLocaleString("en-IN")}
+                      ₹{totalPrice.toLocaleString("en-IN")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="bg-[#FF6B35] text-white text-[10px] font-bold px-2 py-0.5 rounded">
                       {Math.round(
-                        ((originalPrice - destination.price * 85) /
+                        ((originalPrice - (selectedSlot?.price ?? destination.price) * 85) /
                           originalPrice) *
                           100,
                       )}
                       % OFF
                     </span>
                     <span className="text-xs text-white/70">
-                      per person · {destination.duration}
+                      {travellers} × ₹{((selectedSlot?.price ?? destination.price) * 85).toLocaleString("en-IN")} · {destination.duration}
                     </span>
                   </div>
                 </div>
@@ -419,15 +418,33 @@ export default function DestinationDetail() {
                       Travellers
                     </h3>
                     <div className="flex items-center justify-between rounded-lg border border-gray-200 px-4 py-3">
-                      <span className="text-sm text-gray-600">Adults</span>
+                      <div>
+                        <span className="text-sm text-gray-600">Adults</span>
+                        {selectedSlot && (
+                          <p className="text-[10px] text-gray-400 mt-0.5">
+                            Max {selectedSlot.spots} available
+                          </p>
+                        )}
+                      </div>
                       <div className="flex items-center gap-3">
-                        <button className="h-7 w-7 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 text-sm font-bold">
+                        <button
+                          onClick={() => setTravellers((t) => Math.max(1, t - 1))}
+                          disabled={travellers <= 1}
+                          className="h-7 w-7 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 text-sm font-bold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        >
                           −
                         </button>
                         <span className="text-sm font-bold text-gray-900 w-4 text-center">
-                          2
+                          {travellers}
                         </span>
-                        <button className="h-7 w-7 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 text-sm font-bold">
+                        <button
+                          onClick={() => {
+                            const max = selectedSlot?.spots ?? 10;
+                            setTravellers((t) => Math.min(max, t + 1));
+                          }}
+                          disabled={selectedSlot ? travellers >= selectedSlot.spots : travellers >= 10}
+                          className="h-7 w-7 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 text-sm font-bold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        >
                           +
                         </button>
                       </div>
@@ -438,7 +455,7 @@ export default function DestinationDetail() {
                   <Link
                     to={
                       selectedSlot
-                        ? `/checkout?dest=${destination.id}&slot=${selectedSlot.id}`
+                        ? `/checkout?dest=${destination.id}&slot=${selectedSlot.id}&pax=${travellers}`
                         : "#"
                     }
                     onClick={(e) => {

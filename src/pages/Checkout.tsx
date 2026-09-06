@@ -20,6 +20,7 @@ export default function Checkout() {
 
   const destination = destinations.find((d) => d.id === destId);
   const slot = destination?.timeSlots.find((s) => s.id === slotId);
+  const pax = Math.max(1, Math.min(10, parseInt(params.get("pax") ?? "2", 10) || 2));
 
   const [cardNumber, setCardNumber] = useState("");
   const [cardName, setCardName] = useState("");
@@ -30,7 +31,7 @@ export default function Checkout() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
-  const price = slot ? slot.price * 85 * 2 : 0;
+  const price = slot ? slot.price * 85 * pax : 0;
   const [bookingRef] = useState(
     () => `CTP-${Date.now().toString(36).toUpperCase()}`,
   );
@@ -130,7 +131,7 @@ export default function Checkout() {
                   <Users className="h-4 w-4 text-[#2276E3]" />
                   <div>
                     <p className="text-sm font-bold text-gray-900">
-                      2 Travellers
+                      {pax} Traveller{pax > 1 ? "s" : ""}
                     </p>
                     <p className="text-xs text-gray-400 font-mono">
                       Ref: {bookingRef}
@@ -143,7 +144,7 @@ export default function Checkout() {
                 <p className="text-xl font-bold text-gray-900">
                   ₹{price.toLocaleString("en-IN")}
                 </p>
-                <p className="text-xs text-gray-400">Total paid</p>
+                <p className="text-xs text-gray-400">Total paid · {pax} Traveller{pax > 1 ? "s" : ""}</p>
               </div>
 
               <Link
@@ -333,9 +334,9 @@ export default function Checkout() {
                 {/* Price breakdown */}
                 <div className="p-5 space-y-3 border-b border-gray-100">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Trip × 2</span>
+                    <span className="text-gray-500">Trip × {pax}</span>
                     <span className="font-medium text-gray-900">
-                      ₹{(slot.price * 85 * 2).toLocaleString("en-IN")}
+                      ₹{(slot.price * 85 * pax).toLocaleString("en-IN")}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
