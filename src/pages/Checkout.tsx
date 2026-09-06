@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useSearchParams, Link } from "react-router";
 import { motion } from "framer-motion";
 import {
@@ -31,7 +31,7 @@ export default function Checkout() {
   const [isConfirmed, setIsConfirmed] = useState(false);
 
   const price = slot ? slot.price * 85 * 2 : 0;
-  const bookingRef = useMemo(() => `CTP-${Date.now().toString(36).toUpperCase()}`, []);
+  const [bookingRef] = useState(() => `CTP-${Date.now().toString(36).toUpperCase()}`);
 
   function formatCardNumber(val: string) {
     const digits = val.replace(/\D/g, "").slice(0, 16);
